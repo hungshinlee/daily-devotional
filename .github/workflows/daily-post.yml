@@ -1,0 +1,30 @@
+name: Daily Devotional Post
+
+on:
+  schedule:
+    # 每天 UTC 00:00 執行（台灣時間早上 08:00）
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # 允許手動觸發測試
+
+jobs:
+  post-to-line:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Post to LINE
+        env:
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_GROUP_ID: ${{ secrets.LINE_GROUP_ID }}
+          GITHUB_PAGES_URL: ${{ secrets.GITHUB_PAGES_URL }}
+        run: node scripts/post-to-line.js

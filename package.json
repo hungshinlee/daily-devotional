@@ -1,0 +1,24 @@
+{
+  "name": "daily-devotional",
+  "version": "1.0.0",
+  "description": "每日靈修自動發送到 LINE 群組",
+  "main": "scripts/post-to-line.js",
+  "scripts": {
+    "test": "node scripts/post-to-line.js",
+    "post": "node scripts/post-to-line.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hungshinlee/daily-devotional.git"
+  },
+  "keywords": [
+    "line-bot",
+    "devotional",
+    "automation"
+  ],
+  "author": "Winston",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.5"
+  }
+}
