@@ -1,4 +1,6 @@
-# LINE Bot 設定步驟指南
+# LINE Bot 設定步驟指南（MacBook 版）
+
+> 💻 本指南專為 **MacBook** 使用者設計，包含 macOS 專用的指令和快捷鍵說明。
 
 ## 第一步：建立 LINE Bot
 
@@ -45,18 +47,159 @@
 
 ### 3. 取得 Group ID
 
-**方法一：使用測試訊息**
+**⚠️ 重要說明：**
+- 方法一的 broadcast API 只會返回 `{}`，**無法取得 Group ID**
+- 建議使用方法二或方法三來取得 Group ID
+
+**方法一：使用本專案提供的工具（推薦）**
+
+#### 步驟 1：安裝依賴套件
+
+在專案目錄下執行：
 ```bash
-curl -X POST https://api.line.me/v2/bot/message/broadcast \
--H 'Content-Type: application/json' \
--H 'Authorization: Bearer YOUR_CHANNEL_ACCESS_TOKEN' \
--d '{
-    "messages": [{
-        "type": "text",
-        "text": "測試訊息"
-    }]
-}'
+npm install
 ```
+
+**預期結果：**
+```
+added 77 packages, and audited 78 packages in 4s
+found 0 vulnerabilities
+```
+
+#### 步驟 2：啟動 Group ID 取得工具
+
+```bash
+npm run get-group-id
+```
+
+**預期結果：** 會看到以下畫面
+```
+===========================================
+LINE Group ID 取得工具
+===========================================
+
+步驟：
+1. 確保此腳本正在運行
+2. 使用 ngrok 建立公開 URL：ngrok http 3000
+3. 將 ngrok URL 設定到 LINE Developers Console 的 Webhook URL
+4. 在 LINE 群組中傳送任何訊息
+5. Group ID 將顯示在下方
+
+===========================================
+
+本地伺服器運行於: http://localhost:3000
+等待 Webhook 事件...
+
+準備就緒！
+```
+
+⚠️ **保持此終端機視窗運行，不要關閉！**
+
+#### 步驟 3：啟動 ngrok（開啟新的終端機視窗）
+
+**💡 如何在 MacBook 開啟新的終端機視窗：**
+- **方法 A（推薦）：** 按 `⌘ Command + T` 開啟新分頁
+- **方法 B：** 按 `⌘ Command + N` 開啟新視窗
+- **方法 C：** 點選選單「Shell」→「新增視窗」或「新增分頁」
+
+**3.1 安裝 ngrok（如果尚未安裝）**
+
+使用 Homebrew 安裝（macOS 推薦方式）：
+```bash
+brew install ngrok
+```
+
+> 💡 **提示：** 如果還沒安裝 Homebrew，請先前往 https://brew.sh/ 安裝。
+
+**3.2 啟動 ngrok**
+```bash
+ngrok http 3000
+```
+
+**預期結果：** 會看到類似以下畫面
+```
+ngrok
+
+Session Status                online
+Account                       your-account
+Version                       3.x.x
+Region                        Japan (jp)
+Latency                       -
+Web Interface                 http://127.0.0.1:4040
+Forwarding                    https://abc123.ngrok.io -> http://localhost:3000
+
+Connections                   ttl     opn     rt1     rt5     p50     p90
+                              0       0       0.00    0.00    0.00    0.00
+```
+
+**3.3 複製 HTTPS URL**
+- 找到 `Forwarding` 那一行
+- 複製 **HTTPS** 的 URL（例如：`https://abc123.ngrok.io`）
+  - 💡 **Mac 複製技巧：** 用滑鼠選取文字後，按 `⌘ Command + C` 複製
+- ⚠️ 注意：每次啟動 ngrok，URL 都會不同
+
+⚠️ **保持此終端機視窗運行，不要關閉！**
+
+#### 步驟 4：設定 LINE Webhook URL
+
+**4.1 前往 LINE Developers Console**
+- 網址：https://developers.line.biz/
+- 登入你的帳號
+- 選擇你建立的 Bot Channel
+
+**4.2 進入 Messaging API 設定**
+- 點選「**Messaging API**」標籤
+- 向下捲動找到「**Webhook settings**」區塊
+
+**4.3 設定 Webhook URL**
+- 點選 Webhook URL 旁的「**Edit**」按鈕
+- 輸入：`https://你的ngrok網址.ngrok.io/webhook`
+  - 例如：`https://abc123.ngrok.io/webhook`
+  - ⚠️ 注意：網址結尾必須加上 `/webhook`
+- 點選「**Update**」
+
+**4.4 啟用 Webhook**
+- 找到「**Use webhook**」開關
+- 將開關切換為**啟用**（綠色）
+
+**4.5 測試 Webhook（選用）**
+- 點選「**Verify**」按鈕測試連線
+- 如果成功，會顯示「Success」
+
+#### 步驟 5：在 LINE 群組中傳送訊息
+
+- 打開已加入 Bot 的 LINE 群組
+- 傳送任何訊息，例如：`測試` 或 `hello`
+
+#### 步驟 6：查看 Group ID
+
+回到**步驟 2 的終端機視窗**（執行 `npm run get-group-id` 的那個），你會看到：
+
+```
+===========================================
+收到新事件！
+===========================================
+事件類型: message
+來源類型: group
+
+✅ 找到 Group ID！
+-------------------------------------------
+Group ID: C1234567890abcdef1234567890abcdef
+-------------------------------------------
+
+請將此 Group ID 設定到 GitHub Secrets 中：
+LINE_GROUP_ID = C1234567890abcdef1234567890abcdef
+===========================================
+```
+
+**複製顯示的 Group ID**（C 開頭的長字串），稍後會用到。
+- 💡 **Mac 複製技巧：** 用滑鼠選取 Group ID 後，按 `⌘ Command + C` 複製
+
+#### 步驟 7：停止服務
+
+取得 Group ID 後，可以停止服務：
+- 在兩個終端機視窗中按 `⌃ Control + C` 停止程式
+- 或直接關閉終端機視窗/分頁
 
 **方法二：使用 LINE Bot Designer**
 1. 前往 [LINE Bot Designer](https://line-bot-designer.vercel.app/)
@@ -64,8 +207,12 @@ curl -X POST https://api.line.me/v2/bot/message/broadcast \
 3. 在群組中傳送訊息
 4. 查看 webhook 事件中的 `groupId`
 
-**方法三：設定簡單的 Webhook**
-創建一個臨時的 webhook 服務（如使用 ngrok），查看收到的事件中的 `source.groupId`
+**方法三：使用 webhook.site**
+1. 前往 [webhook.site](https://webhook.site/)
+2. 複製提供的 Unique URL
+3. 在 LINE Developers Console 設定此 URL 為 Webhook URL
+4. 在群組中傳送訊息
+5. 回到 webhook.site 查看收到的事件中的 `source.groupId`
 
 ## 第三步：設定 GitHub Secrets
 

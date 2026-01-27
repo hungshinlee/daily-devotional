@@ -1,159 +1,124 @@
-# 每日靈修 LINE Bot
+# 每日靈修 LINE Bot (Daily Devotional)
 
-自動發送每日靈修內容到 LINE 群組的機器人，使用 GitHub Actions 定時執行。
+這是一個自動化的 LINE Bot，專為每天早上發送靈修內容而設計。它使用 GitHub Actions 定時觸發，完全免費且無需維護伺服器。
 
-## 功能特色
+> 🍎 **Mac 使用者友善**：本專案文件特別針對 macOS 環境優化，包含終端機操作與快捷鍵說明。
 
-- ✅ 每天早上 8:00（台灣時間）自動發送
-- ✅ 支援 Markdown frontmatter 格式
-- ✅ 自動連結到 GitHub Pages 完整文章
-- ✅ 完全免費（使用 GitHub Actions）
+## ✨ 功能特色
 
-## 專案結構
+- ⏰ **自動排程**：每天早上 08:00 (台灣時間) 自動發送。
+- 📝 **Markdown 支援**：支援 Frontmatter 格式，寫作就像寫部落格一樣簡單。
+- 🔗 **自動連結**：訊息內自動附帶 GitHub Pages 好讀版連結。
+- 🆓 **完全免費**：利用 GitHub Actions 與 LINE Messaging API 免費額度。
+
+## 🚀 快速開始 (MacBook 版)
+
+### 1. 環境準備
+
+在 macOS 上，我們推薦使用 Homebrew 來安裝開發工具。打開終端機 (Terminal) 並執行：
+
+```bash
+# 1. 安裝 Homebrew (如果還沒安裝)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# 2. 安裝 Node.js (本專案核心環境)
+brew install node
+
+# 3. 安裝 ngrok (用於取得 LINE Group ID)
+brew install ngrok
+```
+
+### 2. 下載並安裝依賴
+
+```bash
+# 進入專案資料夾 (請依實際路徑調整)
+cd ~/Projects/daily-devotional
+
+# 安裝專案依賴
+npm install
+```
+
+### 3. 設定 LINE Bot
+
+這是最關鍵的一步，你需要申請 LINE Bot 並取得權限。
+
+👉 **請閱讀詳細指南：[LINE Bot 設定步驟指南 (SETUP.md)](SETUP.md)**
+
+如果卡在「取得群組 ID」這一步，請參考：
+👉 **專用教學：[如何取得 LINE 群組 ID (GET_GROUP_ID.md)](GET_GROUP_ID.md)**
+
+## 🛠 本地開發與測試
+
+### 模擬發送 (不包含 LINE)
+
+你可以直接執行腳本來測試程式邏輯是否正常（不會真的發送到 LINE，除非你設定了環境變數）：
+
+```bash
+npm test
+```
+
+### 取得 Group ID (Mac 專用工具)
+
+我們內建了一個工具來幫你抓取 Group ID：
+
+```bash
+npm run get-group-id
+```
+*(詳細用法請見 [GET_GROUP_ID.md](GET_GROUP_ID.md))*
+
+## 📂 專案結構
 
 ```
 daily-devotional/
 ├── .github/
-│   └── workflows/
-│       └── daily-post.yml          # GitHub Actions 定時任務
-├── scripts/
-│   └── post-to-line.js             # LINE 訊息發送腳本
-├── devotionals/
-│   ├── 2026-01-26.md               # 每日靈修文章
-│   ├── 2026-01-27.md
+│   └── workflows/daily-post.yml  # 設定每天幾點發送 (Cron Job)
+├── devotionals/                  # 這裡是放靈修文章的地方
+│   ├── 2026-01-26.md
 │   └── ...
-├── package.json
-└── README.md
+├── scripts/
+│   ├── post-to-line.js           # 發送訊息的主程式
+│   └── get-group-id.js           # 幫你抓 Group ID 的小工具
+├── SETUP.md                      # 詳細設定文件
+├── GET_GROUP_ID.md               # 關於 Group ID 的疑難排解
+└── package.json
 ```
 
-## 設定步驟
+## 📝 如何新增靈修文章
 
-### 1. LINE Bot 設定
-
-1. 前往 [LINE Developers Console](https://developers.line.biz/)
-2. 建立新的 Provider 和 Messaging API Channel
-3. 取得 **Channel Access Token**
-4. 將 LINE Bot 加入你的群組
-5. 取得 **Group ID**（可使用 [LINE Bot Designer](https://line-bot-designer.vercel.app/) 工具）
-
-### 2. GitHub Secrets 設定
-
-在 GitHub Repository 的 Settings → Secrets and variables → Actions 中新增：
-
-- `LINE_CHANNEL_ACCESS_TOKEN`：你的 LINE Channel Access Token
-- `LINE_GROUP_ID`：你的 LINE 群組 ID
-- `GITHUB_PAGES_URL`：（選填）你的 GitHub Pages 網址，預設為 `https://hungshinlee.github.io/daily-devotional`
-
-### 3. GitHub Pages 設定
-
-1. 在 Repository Settings → Pages
-2. Source 選擇 `Deploy from a branch`
-3. Branch 選擇 `main` 和 `/devotionals` 資料夾
-4. 儲存後等待部署完成
-
-## 文章格式
-
-### 使用 Frontmatter（推薦）
+1. 在 `devotionals/` 資料夾中建立新的 `.md` 檔案。
+2. 檔名必須是日期格式：`YYYY-MM-DD.md` (例如 `2026-01-27.md`)。
+3. 內容範例：
 
 ```markdown
 ---
 title: 主的恩典夠用
 verse: 哥林多後書 12:9
-date: 2026-01-26
+date: 2026-01-27
 theme: 恩典與軟弱
 ---
 
 ## 經文內容
-
-「他對我說：『我的恩典夠你用的，因為我的能力是在人的軟弱上顯得完全。』」
-
-## 靈修分享
-
-（你的靈修內容...）
-```
-
-### 簡單格式
-
-```markdown
-# 主的恩典夠用
-
-經文：哥林多後書 12:9
-
-## 經文內容
-
-「他對我說：『我的恩典夠你用的，因為我的能力是在人的軟弱上顯得完全。』」
+「他對我說：『我的恩典夠你用的...』」
 
 ## 靈修分享
-
-（你的靈修內容...）
+這裡是你的分享內容...
 ```
 
-## 使用方式
+4. **Commit & Push** 到 GitHub，機器人會在當天自動讀取並發送。
 
-### 新增每日靈修
+## ❓ 常見問題
 
-1. 在 `devotionals/` 資料夾建立新的 Markdown 檔案
-2. 檔名格式：`YYYY-MM-DD.md`（例如：`2026-01-26.md`）
-3. 提交並推送到 GitHub
+**Q: 為什麼顯示 `Command not found: npm`？**
+A: 請確認你有安裝 Node.js。在 Mac 上執行 `brew install node`。
 
-### 手動測試
+**Q: 訊息沒有發送？**
+A: 請檢查 GitHub Repository 的 **Actions** 分頁，看看執行的 Log 有什麼錯誤。通常是 Token 過期或 Group ID 設定錯誤。
 
-在 GitHub Actions 頁面：
+**Q: 時間不對？**
+A: GitHub Actions 使用 UTC 時間。台灣是 UTC+8。
+- 台灣 08:00 = UTC 00:00
+- 設定檔在 `.github/workflows/daily-post.yml`
 
-1. 點選 "Daily Devotional Post" workflow
-2. 點選 "Run workflow" 按鈕
-3. 選擇 branch 並執行
-
-### 本地測試
-
-```bash
-# 安裝依賴
-npm install
-
-# 設定環境變數（測試用）
-export LINE_CHANNEL_ACCESS_TOKEN="your_token"
-export LINE_GROUP_ID="your_group_id"
-export GITHUB_PAGES_URL="https://hungshinlee.github.io/daily-devotional"
-
-# 執行腳本
-npm test
-```
-
-## 排程說明
-
-- **執行時間**：每天 UTC 00:00（台灣時間早上 08:00）
-- **時區轉換**：GitHub Actions 使用 UTC 時間，台灣時間需 +8 小時
-- **調整時間**：修改 `.github/workflows/daily-post.yml` 中的 cron 表達式
-
-### Cron 時間對照表
-
-| 台灣時間 | UTC 時間 | Cron 表達式 |
-|---------|---------|-----------|
-| 07:00   | 23:00 (前一天) | `0 23 * * *` |
-| 08:00   | 00:00   | `0 0 * * *` |
-| 09:00   | 01:00   | `0 1 * * *` |
-
-## 常見問題
-
-### Q: 訊息沒有發送？
-
-1. 檢查 GitHub Actions 執行記錄
-2. 確認 Secrets 設定正確
-3. 確認當天的檔案存在且格式正確
-4. 檢查 LINE Bot 是否在群組中
-
-### Q: 如何更改發送時間？
-
-修改 `.github/workflows/daily-post.yml` 中的 cron 時間。
-
-### Q: 可以發送到多個群組嗎？
-
-可以，修改 `scripts/post-to-line.js`，將 `GROUP_ID` 改為陣列並迴圈發送。
-
-## 授權
+## 📄 授權
 
 MIT License
-
-## 聯絡方式
-
-如有問題或建議，歡迎開 Issue 或 Pull Request！
