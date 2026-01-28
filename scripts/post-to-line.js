@@ -16,9 +16,11 @@ if (!CHANNEL_ACCESS_TOKEN || !GROUP_ID) {
 
 // 取得今天的日期 (YYYY-MM-DD)
 const today = new Date().toISOString().split('T')[0];
-const filePath = path.join(__dirname, '..', 'devotionals', `${today}.md`);
+const monthDir = today.substring(0, 7); // 取得 YYYY-MM
+const filePath = path.join(__dirname, '..', 'devotionals', monthDir, `${today}.md`);
 
 console.log(`📅 今天日期：${today}`);
+console.log(`📂 月份目錄：${monthDir}`);
 console.log(`📄 檢查檔案：${filePath}`);
 
 // 檢查檔案是否存在
@@ -69,7 +71,7 @@ const content = fs.readFileSync(filePath, 'utf-8');
 const devotional = parseMarkdown(content);
 
 // 建立 LINE 訊息
-const articleUrl = `${GITHUB_PAGES_URL}/${today}`;
+const articleUrl = `${GITHUB_PAGES_URL}/${monthDir}/${today}`;
 const message = {
   type: 'text',
   text: `📖 ${devotional.title || '每日靈修'}\n\n📜 ${devotional.verse || ''}\n\n🔗 完整內容：\n${articleUrl}`

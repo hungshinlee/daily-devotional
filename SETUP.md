@@ -71,23 +71,13 @@
    - 在內容中找到 `source` -> `groupId`
    - 複製以 `C` 開頭的字串（例如 `C1234567890...`）
 
-**方法二：使用本專案工具（進階）**
+### 方法 2：使用 LINE Bot Designer
 
-如果你希望在本地執行伺服器來接收 Event：
-
-1. **安裝與啟動**
-   ```bash
-   npm install
-   npm run get-group-id
-   ```
-2. **設定 ngrok**
-   - 另開終端機，確保已[註冊 ngrok](https://dashboard.ngrok.com/) 並設定 authtoken
-   - 執行 `ngrok http 3000`
-   - 複製 HTTPS 網址
-3. **設定 Webhook**
-   - 在 LINE Console 設定 Webhook URL 為 `https://你的ngrok.io/webhook` (**需加上 /webhook**)
-4. **觸發**
-   - 在群組傳送訊息，終端機即會顯示 ID
+1. 下載並安裝 [LINE Bot Designer](https://line-bot-designer.vercel.app/)
+2. 開啟程式，選擇 "Start a new project"
+3. 在 "Bot settings" 輸入你的 Channel Access Token
+4. 在群組傳送訊息
+5. 程式介面會顯示收到的 Webhook 事件，從中尋找 `groupId`
 
 ## 第三步：設定 GitHub Secrets
 
