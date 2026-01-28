@@ -2,7 +2,7 @@
 
 這是一個自動化的 LINE Bot，專為每天早上發送靈修內容而設計。它使用 GitHub Actions 定時觸發，完全免費且無需維護伺服器。
 
-> 🍎 **Mac 使用者友善**：本專案文件特別針對 macOS 環境優化，包含終端機操作與快捷鍵說明。
+> 🌍 **全平台支援**：本專案文件適用於 macOS 與 Windows 環境。
 
 ## ✨ 功能特色
 
@@ -11,11 +11,14 @@
 - 🔗 **自動連結**：訊息內自動附帶 GitHub Pages 好讀版連結。
 - 🆓 **完全免費**：利用 GitHub Actions 與 LINE Messaging API 免費額度。
 
-## 🚀 快速開始 (MacBook 版)
+## 🚀 快速開始
 
 ### 1. 環境準備
 
-在 macOS 上，我們推薦使用 Homebrew 來安裝開發工具。打開終端機 (Terminal) 並執行：
+請根據你的作業系統選擇安裝方式：
+
+#### 🍎 macOS 使用者
+打開終端機 (Terminal) 並使用 Homebrew 安裝：
 
 ```bash
 # 1. 安裝 Homebrew (如果還沒安裝)
@@ -23,16 +26,18 @@
 
 # 2. 安裝 Node.js (本專案核心環境)
 brew install node
-
-# 3. 安裝 ngrok (用於取得 LINE Group ID)
-brew install ngrok
 ```
+
+#### 🪟 Windows 使用者
+1. **安裝 Node.js**：前往 [Node.js 官網](https://nodejs.org/) 下載並安裝 **LTS** 版本。
+2. **安裝 Git** (推薦)：前往 [Git for Windows](https://git-scm.com/download/win) 下載並安裝，這會提供好用的 Git Bash 終端機。
+3. **驗證安裝**：打開 PowerShell 或命令提示字元 (cmd)，輸入 `node -v` 確認有顯示版本號 (例如 `v18.x.x`)。
 
 ### 2. 下載並安裝依賴
 
 ```bash
 # 進入專案資料夾 (請依實際路徑調整)
-cd ~/Projects/daily-devotional
+cd daily-devotional
 
 # 安裝專案依賴
 npm install
@@ -100,7 +105,9 @@ theme: 恩典與軟弱
 ## ❓ 常見問題
 
 **Q: 為什麼顯示 `Command not found: npm`？**
-A: 請確認你有安裝 Node.js。在 Mac 上執行 `brew install node`。
+A: 請確認你有安裝 Node.js。
+- **macOS**: 執行 `brew install node`
+- **Windows**: 前往 [Node.js 官網](https://nodejs.org/) 下載並安裝 LTS 版本。安裝後請重啟終端機。
 
 **Q: 訊息沒有發送？**
 A: 請檢查 GitHub Repository 的 **Actions** 分頁，看看執行的 Log 有什麼錯誤。通常是 Token 過期或 Group ID 設定錯誤。

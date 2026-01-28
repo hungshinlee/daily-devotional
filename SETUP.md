@@ -1,6 +1,6 @@
-# LINE Bot 設定步驟指南（MacBook 版）
+# LINE Bot 設定步驟指南
 
-> 💻 本指南專為 **MacBook** 使用者設計，包含 macOS 專用的指令和快捷鍵說明。
+> 💻 **跨平台支援**：本指南適用於 Windows 與 macOS 使用者，步驟通用。
 
 ## 第一步：建立 LINE Bot
 
