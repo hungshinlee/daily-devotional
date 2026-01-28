@@ -71,7 +71,7 @@ const content = fs.readFileSync(filePath, 'utf-8');
 const devotional = parseMarkdown(content);
 
 // 建立 LINE 訊息
-const articleUrl = `${GITHUB_PAGES_URL}/${monthDir}/${today}`;
+const articleUrl = `${GITHUB_PAGES_URL}/devotionals/${monthDir}/${today}`;
 const message = {
   type: 'text',
   text: `📖 ${devotional.title || '每日靈修'}\n\n📜 ${devotional.verse || ''}\n\n🔗 完整內容：\n${articleUrl}`
