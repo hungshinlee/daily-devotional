@@ -45,7 +45,7 @@ npm install
 👉 **請閱讀詳細指南：[LINE Bot 設定步驟指南 (SETUP.md)](SETUP.md)**
 
 如果卡在「取得群組 ID」這一步，請參考：
-👉 **專用教學：[如何取得 LINE 群組 ID (GET_GROUP_ID.md)](GET_GROUP_ID.md)**
+👉 **請參考：[SETUP.md 中的「取得 Group ID」章節](SETUP.md#3-取得-group-id)**
 
 ## 🛠 本地開發與測試
 
@@ -57,14 +57,6 @@ npm install
 npm test
 ```
 
-### 取得 Group ID (Mac 專用工具)
-
-我們內建了一個工具來幫你抓取 Group ID：
-
-```bash
-npm run get-group-id
-```
-*(詳細用法請見 [GET_GROUP_ID.md](GET_GROUP_ID.md))*
 
 ## 📂 專案結構
 
@@ -76,17 +68,16 @@ daily-devotional/
 │   ├── 2026-01-26.md
 │   └── ...
 ├── scripts/
-│   ├── post-to-line.js           # 發送訊息的主程式
-│   └── get-group-id.js           # 幫你抓 Group ID 的小工具
-├── SETUP.md                      # 詳細設定文件
-├── GET_GROUP_ID.md               # 關於 Group ID 的疑難排解
+│   └── post-to-line.js           # 發送訊息的主程式
+├── SETUP.md                      # 詳細設定指南 (含如何取得 Group ID)
 └── package.json
 ```
 
 ## 📝 如何新增靈修文章
 
-1. 在 `devotionals/` 資料夾中建立新的 `.md` 檔案。
-2. 檔名必須是日期格式：`YYYY-MM-DD.md` (例如 `2026-01-27.md`)。
+1. 在 `devotionals/` 資料夾中，確認是否有**當月月份**的資料夾（格式 `YYYY-MM`，如 `2026-01`）。如果沒有，請先建立。
+2. 在該月份資料夾內建立新的 `.md` 檔案，檔名必須是日期格式：`YYYY-MM-DD.md` (例如 `2026-01-27.md`)。
+   - 📌 **正確路徑範例**：`devotionals/2026-01/2026-01-27.md`
 3. 內容範例：
 
 ```markdown
